@@ -272,5 +272,24 @@ public class ProductoModelo extends Conector {
 		}
 		return true;
 	}
+	
+	public String getCodigo (String codigo) {
+		String codigoBBDD = null;
+		String sql = "SELECT codigo FROM productos WHERE codigo = ?";
+		PreparedStatement pst;
+		try {
+			pst = con.prepareStatement(sql);
+			pst.setString(1, codigo);
+			
+			ResultSet rs = pst.executeQuery();
+			if (rs.next()) {
+				codigoBBDD = rs.getString("codigo");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return codigoBBDD;
+	}
 
 }
