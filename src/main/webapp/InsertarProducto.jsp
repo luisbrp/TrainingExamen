@@ -61,7 +61,7 @@
 		  <select class="form-control" id="seccion" name="id_seccion"  required>
 		    <option value="">--Selecciona una seccion</option>
 		    <c:forEach items="${secciones}" var="seccion">
-		      <option value="${seccion.id}">${seccion.id}</option>
+		      <option value="${seccion.id}">${seccion.nombre}</option>
 		    </c:forEach>
 		  </select>
 	</div>
