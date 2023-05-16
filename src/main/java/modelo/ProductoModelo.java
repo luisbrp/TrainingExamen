@@ -72,7 +72,7 @@ public class ProductoModelo extends Conector {
 
 	public boolean registrar(Producto producto) {
 		PreparedStatement pst = null;
-		String sql = "INSERT INTO productos(codigo, nombre, precio, cantidad )VALUES(?, ?, ?, ?)";
+		String sql = "INSERT INTO productos(codigo, nombre, precio, cantidad, caducidad )VALUES(?, ?, ?, ?, ?)";
 		try {
 			pst = con.prepareStatement(sql);
 
@@ -80,7 +80,7 @@ public class ProductoModelo extends Conector {
 			pst.setString(2, producto.getNombre());
 			pst.setDouble(3, producto.getPrecio());
 			pst.setInt(4, producto.getCantidad());
-
+			pst.setDate(5, new Date (producto.getCaducidad().getTime()));
 			pst.execute();
 			return true;
 
