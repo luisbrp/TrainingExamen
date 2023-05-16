@@ -3,6 +3,7 @@ package controlador;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import modelo.Producto;
 import modelo.ProductoModelo;
+import modelo.Seccion;
+import modelo.SeccionModelo;
 
 /**
  * Servlet implementation class InsertarUsuario
@@ -33,7 +36,14 @@ public class InsertarProducto extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		SeccionModelo sm = new SeccionModelo();
+		ArrayList<Seccion> secciones = new ArrayList<Seccion>();
+		
+		sm.conectar();
+		secciones = sm.secciones();
+		sm.cerrar();
+		
+		request.setAttribute("secciones", secciones);
 		request.getRequestDispatcher("InsertarProducto.jsp").forward(request, response);
 	}
 
@@ -50,6 +60,7 @@ public class InsertarProducto extends HttpServlet {
 		int cantidad = Integer.parseInt(request.getParameter("cantidad"));
 		double precio = Double.parseDouble(request.getParameter("precio"));
 		String caducidadP = request.getParameter("caducidad");
+		int id_seccion = Integer.parseInt(request.getParameter("id_seccion"));
 		
 		
 		try {
@@ -58,13 +69,17 @@ public class InsertarProducto extends HttpServlet {
 			producto.setNombre(nombre);
 			producto.setCantidad(cantidad);
 			producto.setPrecio(precio);
-			producto.setCaducidad(caducidad);	
+			producto.setCaducidad(caducidad);
+			
+			Seccion seccion = new Seccion();
+			seccion.setId(id_seccion);
+			producto.setSeccion(seccion);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		pm.conectar();
-		pm.registrar(producto);
+		pm.insertar(producto);
 		pm.cerrar();
 		
 	}
