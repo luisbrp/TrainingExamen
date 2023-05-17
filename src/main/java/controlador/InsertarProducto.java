@@ -75,7 +75,12 @@ public class InsertarProducto extends HttpServlet {
 				
 				e.printStackTrace();
 			}
-	       
+			
+			int id_seccion = Integer.parseInt(id_seccionString);
+			Seccion seccion = new Seccion();
+			seccion.setId(id_seccion);
+			producto.setSeccion(seccion);
+			
 	        pm.conectar();
 	        pm.insertar(producto);
 	        pm.cerrar();
@@ -107,7 +112,7 @@ public class InsertarProducto extends HttpServlet {
 
 	    try {
 	        Date caducidad = formato.parse(caducidadP);
-	        java.util.Date fechaActual = new Date();
+	        Date fechaActual = new Date();
 
 	        // Fecha posterior a la actual
 	        if (!caducidad.after(fechaActual)) {
