@@ -51,70 +51,80 @@ public class InsertarProducto extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ProductoModelo pm = new ProductoModelo();
-		Producto producto = new Producto();
-			SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-		
-		    String codigo = request.getParameter("codigo");
-		    String nombre = request.getParameter("nombre");
-		    int cantidad = Integer.parseInt(request.getParameter("cantidad"));
-		    double precio = Double.parseDouble(request.getParameter("precio"));
-		    String caducidadP = request.getParameter("caducidad");
-		    String id_seccionString = request.getParameter("id_seccion");
+	    String codigo = request.getParameter("codigo");
+	    String nombre = request.getParameter("nombre");
+	    int cantidad = Integer.parseInt(request.getParameter("cantidad"));
+	    double precio = Double.parseDouble(request.getParameter("precio"));
+	    String caducidadP = request.getParameter("caducidad");
+	    String id_seccionString = request.getParameter("id_seccion");
 
-		    // Consultar codigo en la base de datos
-		    String codigoConsultado = null;
+	    if (validarDatosProducto(codigo, nombre, cantidad, precio, caducidadP, id_seccionString)) {
+	        ProductoModelo pm = new ProductoModelo();
+	        Producto producto = new Producto();
+	        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
 
-		    pm.conectar();
-		    codigoConsultado = pm.getCodigo(codigo);
-		    pm.cerrar();
+	        producto.setCodigo(codigo);
+	        producto.setNombre(nombre);
+	        producto.setCantidad(cantidad);
+	        producto.setPrecio(precio);
+	        
+			try {
+				Date caducidad = formato.parse(caducidadP);
+				producto.setCaducidad(caducidad);
+			} catch (ParseException e) {
+				
+				e.printStackTrace();
+			}
+	       
+	        pm.conectar();
+	        pm.insertar(producto);
+	        pm.cerrar();
+	        
+	    } else {
+	        response.sendRedirect("InsertarProducto");
+	    }
+	}
 
-		    if (!codigoConsultado.equals(codigo)) {
-		        response.sendRedirect("InsertarProducto");
-		        return;
-		    }
+	private boolean validarDatosProducto(String codigo, String nombre, int cantidad, double precio, String caducidadP, String id_seccionString) {
+	    ProductoModelo pm = new ProductoModelo();
+	    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
 
-		    producto.setCodigo(codigo);
-		    producto.setNombre(nombre);
+	    // Consultar codigo en la base de datos
+	    String codigoConsultado = null;
 
-		    // Precio y cantidad positivos
-		    if (cantidad <= 0 || precio <= 0) {
-		        response.sendRedirect("InsertarProducto");
-		        return;
-		    }
+	    pm.conectar();
+	    codigoConsultado = pm.getCodigo(codigo);
+	    pm.cerrar();
 
-		    producto.setCantidad(cantidad);
-		    producto.setPrecio(precio);
+	    if (!codigoConsultado.equals(codigo)) {
+	        return false;
+	    }
 
-		    try {
-		        Date caducidad = formato.parse(caducidadP);
-		        java.util.Date fechaActual = new Date();
+	    // Precio y cantidad positivos
+	    if (cantidad <= 0 || precio <= 0) {
+	        return false;
+	    }
 
-		        // Fecha posterior a la actual
-		        if (!caducidad.after(fechaActual)) {
-		            response.sendRedirect("InsertarProducto");
-		            return;
-		        }
+	    try {
+	        Date caducidad = formato.parse(caducidadP);
+	        java.util.Date fechaActual = new Date();
 
-		        // Sección obligatoria
-		        if (id_seccionString == null || id_seccionString.isEmpty()) {
-		            response.sendRedirect("InsertarProducto");
-		            return;
-		        }
+	        // Fecha posterior a la actual
+	        if (!caducidad.after(fechaActual)) {
+	            return false;
+	        }
 
-		        int id_seccion = Integer.parseInt(id_seccionString);
-		        Seccion seccion = new Seccion();
-		        seccion.setId(id_seccion);
-		        producto.setSeccion(seccion);
+	        // Sección obligatoria
+	        if (id_seccionString == null || id_seccionString.isEmpty()) {
+	            return false;
+	        }
 
-		    } catch (ParseException e) {
-		        e.printStackTrace();
-		        response.sendRedirect("InsertarProducto");
-		        return;
-		    }
+	    } catch (ParseException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
 
-		    pm.conectar();
-		    pm.insertar(producto);
-		    pm.cerrar();
-		}
+	    return true;
+	}
+
 }
