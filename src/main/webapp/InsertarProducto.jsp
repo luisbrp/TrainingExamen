@@ -20,7 +20,7 @@
 		           onchange="this.setCustomValidity('')" /><br/>
   		</div>
   		
-  		<div class="form-group">
+  		 <div class="form-group">
     		<div class="form-group">
 		    <label>Nombre:</label>
 		    <input type="text" name="nombre" required 
