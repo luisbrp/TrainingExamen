@@ -10,6 +10,12 @@
 <title>Insert title here</title>
 </head>
 <body>
+
+	<c:if test="${error eq true }">
+	<div class="alert alert-danger" role="alert">
+  		Error
+	</div>
+	</c:if>
 		<form method="post" action="InsertarProducto">
   		<div class="form-group">
     		<div class="form-group">
