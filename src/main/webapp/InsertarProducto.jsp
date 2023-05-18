@@ -10,7 +10,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-		
+	
 		<c:if test="${error == true}">
 			<div class="alert alert-danger" role="alert">
   				ERROR
@@ -71,10 +71,11 @@
 		      <option value="${seccion.id}">${seccion.nombre}</option>
 		    </c:forEach>
 		  </select>
-	</div>
+		</div>
   		</div>
   		</div>
   		<input type="submit" value="Guardar" class="btn btn-primary mt-4"/>
   		</form>
+  		
 </body>
 </html>

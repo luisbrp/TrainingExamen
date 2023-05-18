@@ -39,6 +39,7 @@ public class InsertarProducto extends HttpServlet {
 		SeccionModelo sm = new SeccionModelo();
 		ArrayList<Seccion> secciones = new ArrayList<Seccion>();
 		
+		
 		sm.conectar();
 		secciones = sm.secciones();
 		sm.cerrar();
@@ -54,7 +55,7 @@ public class InsertarProducto extends HttpServlet {
 		ProductoModelo pm = new ProductoModelo();
 		Producto producto = new Producto();
 		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-		
+		boolean error = false;
 		
 		String codigo = request.getParameter("codigo");
 		String nombre = request.getParameter("nombre");
@@ -90,12 +91,12 @@ public class InsertarProducto extends HttpServlet {
 				pm.insertar(producto);
 				pm.cerrar();
 			} else {
-				
-				response.sendRedirect("InsertarProducto");
+				error = true;
+				request.setAttribute("error", error);
+				doGet(request, response);
 			}
 			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
