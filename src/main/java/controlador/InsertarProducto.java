@@ -51,85 +51,54 @@ public class InsertarProducto extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    String codigo = request.getParameter("codigo");
-	    String nombre = request.getParameter("nombre");
-	    int cantidad = Integer.parseInt(request.getParameter("cantidad"));
-	    double precio = Double.parseDouble(request.getParameter("precio"));
-	    String caducidadP = request.getParameter("caducidad");
-	    String id_seccionString = request.getParameter("id_seccion");
-
-	    if (validarDatosProducto(codigo, nombre, cantidad, precio, caducidadP, id_seccionString)) {
-	        ProductoModelo pm = new ProductoModelo();
-	        Producto producto = new Producto();
-	        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-
-	        producto.setCodigo(codigo);
-	        producto.setNombre(nombre);
-	        producto.setCantidad(cantidad);
-	        producto.setPrecio(precio);
-	        
-			try {
-				Date caducidad = formato.parse(caducidadP);
+		ProductoModelo pm = new ProductoModelo();
+		Producto producto = new Producto();
+		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+		boolean error = false;
+		
+		String codigo = request.getParameter("codigo");
+		String nombre = request.getParameter("nombre");
+		int cantidad = Integer.parseInt(request.getParameter("cantidad"));
+		double precio = Double.parseDouble(request.getParameter("precio"));
+		String caducidadP = request.getParameter("caducidad");
+		String id_seccionString = request.getParameter("id_seccion");
+		
+		
+		//Consultar codigo en la base de datos
+		String codigoConsultado = null;
+		
+		pm.conectar();
+		codigoConsultado = pm.getCodigo(codigo);
+		pm.cerrar();
+		
+		Date caducidad;
+		try {
+			caducidad = formato.parse(caducidadP);
+			java.util.Date fechaActual = new Date();
+			
+			if (codigoConsultado == codigo && cantidad >= 0 && precio >= 0 && caducidad.after(fechaActual) && id_seccionString != null && !id_seccionString.isEmpty()) {
+				producto.setCodigo(codigo);
+				producto.setNombre(nombre);
 				producto.setCaducidad(caducidad);
-			} catch (ParseException e) {
-				
-				e.printStackTrace();
+				producto.setPrecio(precio);
+				producto.setCaducidad(caducidad);
+				int id_seccion = Integer.parseInt(id_seccionString);
+				Seccion seccion = new Seccion();
+				seccion.setId(id_seccion);
+				producto.setSeccion(seccion);
+				pm.conectar();
+				pm.insertar(producto);
+				pm.cerrar();
+			} else {
+				error = true;
+				request.setAttribute("error", error);
+				doGet(request, response);
 			}
 			
-			int id_seccion = Integer.parseInt(id_seccionString);
-			Seccion seccion = new Seccion();
-			seccion.setId(id_seccion);
-			producto.setSeccion(seccion);
-			
-	        pm.conectar();
-	        pm.insertar(producto);
-	        pm.cerrar();
-	        
-	    } else {
-	        response.sendRedirect("InsertarProducto");
-	    }
-	}
-
-	private boolean validarDatosProducto(String codigo, String nombre, int cantidad, double precio, String caducidadP, String id_seccionString) {
-	    ProductoModelo pm = new ProductoModelo();
-	    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-
-	    // Consultar codigo en la base de datos
-	    String codigoConsultado = null;
-
-	    pm.conectar();
-	    codigoConsultado = pm.getCodigo(codigo);
-	    pm.cerrar();
-
-	    if (!codigoConsultado.equals(codigo)) {
-	        return false;
-	    }
-
-	    // Precio y cantidad positivos
-	    if (cantidad <= 0 || precio <= 0) {
-	        return false;
-	    }
-
-	    try {
-	        Date caducidad = formato.parse(caducidadP);
-	        Date fechaActual = new Date();
-
-	        // Fecha posterior a la actual
-	        if (!caducidad.after(fechaActual)) {
-	            return false;
-	        }
-
-	        // Sección obligatoria
-	        if (id_seccionString == null || id_seccionString.isEmpty()) {
-	            return false;
-	        }
-
-	    } catch (ParseException e) {
-	        e.printStackTrace();
-	        return false;
-	    }
-
-	    return true;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }
