@@ -71,55 +71,33 @@ public class InsertarProducto extends HttpServlet {
 		codigoConsultado = pm.getCodigo(codigo);
 		pm.cerrar();
 		
-		if (codigoConsultado == codigo) {
-			producto.setCodigo(codigo);
-		} else {
-			response.sendRedirect("InsertarProducto");
-		}
-		producto.setNombre(nombre);
-		
-		//Precio y cantidad positivos
-		if (cantidad > 0) {
-			producto.setCantidad(cantidad);
-		} else {
-			response.sendRedirect("InsertarProducto");
-		}
-		
-		if (precio > 0) {
-			producto.setPrecio(precio);
-		} else {
-			response.sendRedirect("InsertarProducto");
-		}
-		
+		Date caducidad;
 		try {
-			
-			Date caducidad = formato.parse(caducidadP);
+			caducidad = formato.parse(caducidadP);
 			java.util.Date fechaActual = new Date();
 			
-			//fecha posterior a la actual
-			if (caducidad.after(fechaActual)) {
+			if (codigoConsultado == codigo && cantidad >= 0 && precio >= 0 && caducidad.after(fechaActual) && id_seccionString != null && !id_seccionString.isEmpty()) {
+				producto.setCodigo(codigo);
+				producto.setNombre(nombre);
 				producto.setCaducidad(caducidad);
-			} else {
-				response.sendRedirect("InsertarProducto");
-			}
-			
-			//sección obligatoria
-			if (id_seccionString != null && !id_seccionString.isEmpty()) {
+				producto.setPrecio(precio);
+				producto.setCaducidad(caducidad);
 				int id_seccion = Integer.parseInt(id_seccionString);
 				Seccion seccion = new Seccion();
 				seccion.setId(id_seccion);
 				producto.setSeccion(seccion);
+				pm.conectar();
+				pm.insertar(producto);
+				pm.cerrar();
 			} else {
+				
 				response.sendRedirect("InsertarProducto");
 			}
 			
-			 
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		pm.conectar();
-		pm.insertar(producto);
-		pm.cerrar();
+		
 	}
 }

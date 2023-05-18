@@ -274,7 +274,7 @@ public class ProductoModelo extends Conector {
 	}
 	
 	public String getCodigo (String codigo) {
-		String codigoBBDD = null;
+		String codigoConsultado = null;
 		String sql = "SELECT codigo FROM productos WHERE codigo = ?";
 		PreparedStatement pst;
 		try {
@@ -283,13 +283,14 @@ public class ProductoModelo extends Conector {
 			
 			ResultSet rs = pst.executeQuery();
 			if (rs.next()) {
-				codigoBBDD = rs.getString("codigo");
+				codigoConsultado = rs.getString("codigo");
+			
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return codigoBBDD;
+		return codigoConsultado;
 	}
 
 }

@@ -10,7 +10,14 @@
 <title>Insert title here</title>
 </head>
 <body>
-		<form method="post" action="InsertarProducto">
+		
+		<c:if test="${error == true}">
+			<div class="alert alert-danger" role="alert">
+  				ERROR
+			</div>
+		</c:if>
+		
+		<form method="post" action="InsertarProducto" class="mt-5">
   		<div class="form-group">
     		<div class="form-group">
 		    <label>Codigo:</label>
@@ -58,7 +65,7 @@
   		
   		<div class="form-group">
   		<label for="seccion">Selecciona una seccion:</label>
-		  <select class="form-control" id="seccion" name="id_seccion"  required>
+		  <select class="form-control" id="seccion" name="id_seccion" >
 		    <option value="">--Selecciona una seccion</option>
 		    <c:forEach items="${secciones}" var="seccion">
 		      <option value="${seccion.id}">${seccion.nombre}</option>

@@ -54,15 +54,16 @@ public class Producto {
 	public int getCantidad() {
 		return cantidad;
 	}
+	public void setSeccion(Seccion seccion) {
+		this.seccion = seccion;
+	}
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
 	public Seccion getSeccion() {
 		return seccion;
 	}
-	public void setSeccion(Seccion seccion) {
-		this.seccion = seccion;
-	}
+	
 	public ArrayList<Supermercado> getSupermercados() {
 		return supermercados;
 	}
