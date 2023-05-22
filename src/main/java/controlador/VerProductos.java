@@ -15,7 +15,7 @@ import modelo.ProductoModelo;
 /**
  * Servlet implementation class principal
  */
-@WebServlet("/principal")
+@WebServlet("/VerProductos")
 public class VerProductos extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

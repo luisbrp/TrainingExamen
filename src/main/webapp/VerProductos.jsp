@@ -32,6 +32,7 @@
       <td>${producto.precio}</td>
       <td>${producto.caducidad}</td>
       <td>${producto.nombreSeccion}</td>
+      <td><a href="ModificarProducto?id=${producto.id}" class="btn btn-success">Editar</a></td>
     </tr>
   </c:forEach>
   </tbody>

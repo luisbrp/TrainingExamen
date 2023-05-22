@@ -63,15 +63,15 @@
   		</div>
   		
   		<div class="form-group">
-  		<label for="seccion">Selecciona una seccion:</label>
-		  <select class="form-control" id="seccion" name="id_seccion"  required>
-		    <option value="">--Selecciona una seccion</option>
-		    <c:forEach items="${secciones}" var="seccion">
-		      <option value="${seccion.id}">${seccion.nombre}</option>
-		    </c:forEach>
-		  </select>
-	</div>
+  			<label for="seccion">Selecciona una seccion:</label>
+				  <select class="form-control" id="seccion" name="id_seccion"  required>
+				    <option value="">--Selecciona una seccion</option>
+				    <c:forEach items="${secciones}" var="seccion">
+				      <option value="${seccion.id}">${seccion.nombre}</option>
+				    </c:forEach>
+				  </select>
   		</div>
+  		
   		</div>
   		<input type="submit" value="Guardar" class="btn btn-primary mt-4"/>
   		</form>
