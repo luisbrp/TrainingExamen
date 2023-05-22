@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Producto {
+	@Override
+	public String toString() {
+		return "Producto [id=" + id + ", codigo=" + codigo + ", nombre=" + nombre + ", precio=" + precio + ", cantidad="
+				+ cantidad + ", caducidad=" + caducidad + ", nombreSeccion=" + nombreSeccion + ", seccion=" + seccion
+				+ ", supermercados=" + supermercados + "]";
+	}
 	private int id;
 	private String codigo;
 	private String nombre;

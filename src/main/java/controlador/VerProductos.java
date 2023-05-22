@@ -2,6 +2,7 @@ package controlador;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,13 +34,41 @@ public class VerProductos extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ProductoModelo pm = new ProductoModelo();
 		
-		pm.conectar();
-		ArrayList<Producto> prodcutos = pm.productosConNombreSeccion();
-		pm.cerrar();
+		
+		String cadena = request.getParameter("cadena");
+		
+		//comprobar si llega la cadena para el buscador
+		if (cadena != null && !cadena.isEmpty()) {
+			pm.conectar();
+			ArrayList<Producto> productos = pm.productos();
+			
+			Iterator<Producto> it = productos.iterator();
+			ArrayList<Producto> productosEncontrados =  new ArrayList<Producto>();
+			while (it.hasNext()) {
+				for (Producto producto : productos) {
+					if (producto.getCodigo().toLowerCase().contains(cadena) || (producto.getNombre().toLowerCase().contains(cadena))) {
+						productosEncontrados.add(producto);
+						System.out.println(productosEncontrados.toString());
+						request.setAttribute("productosEncontrados", productosEncontrados);
+						request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
+					}
+				}
+			}
+			
+		} else {
+			pm.conectar();
+			ArrayList<Producto> prodcutos = pm.productosConNombreSeccion();
+			pm.cerrar();
+			request.setAttribute("productos", prodcutos);
+			request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
+		}
 		
 		
-		request.setAttribute("productos", prodcutos);
-		request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
+		
+		
+		
+		
+		
 	}
 
 	/**
