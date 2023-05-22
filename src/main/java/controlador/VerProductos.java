@@ -53,18 +53,13 @@ public class VerProductos extends HttpServlet {
             pm.cerrar();
         }
 
-        // Filtrar por precio miny max
+        // Filtrar por precio min y max
         if (precioMin != null && !precioMin.isEmpty() || precioMax != null && !precioMax.isEmpty()) {
             double min = Double.MIN_VALUE;
             double max = Double.MAX_VALUE;
 
-            if (precioMin != null && !precioMin.isEmpty()) {
                 min = Double.parseDouble(precioMin);
-            }
-
-            if (precioMax != null && !precioMax.isEmpty()) {
                 max = Double.parseDouble(precioMax);
-            }
 
             for (Producto producto : TodosLosProductos) {
                 double precio = producto.getPrecio();
