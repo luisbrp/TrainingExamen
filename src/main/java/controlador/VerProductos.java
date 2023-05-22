@@ -39,7 +39,7 @@ public class VerProductos extends HttpServlet {
         String precioMax = request.getParameter("precioMax");
 
         pm.conectar();
-        ArrayList<Producto> productos = pm.productosConNombreSeccion();
+        ArrayList<Producto> TodosLosProductos = pm.productosConNombreSeccion();
         pm.cerrar();
 
         ArrayList<Producto> productosFiltrados = new ArrayList<Producto>();
@@ -49,36 +49,38 @@ public class VerProductos extends HttpServlet {
 
         if (recargarProductos) {
             pm.conectar();
-            productos = pm.productosConNombreSeccion(); //
+            TodosLosProductos = pm.productosConNombreSeccion(); // Recargar productos
             pm.cerrar();
         }
 
         // Filtrar por precio miny max
-        if (precioMin != null || precioMax != null) {
+        if (precioMin != null && !precioMin.isEmpty() || precioMax != null && !precioMax.isEmpty()) {
             double min = Double.MIN_VALUE;
             double max = Double.MAX_VALUE;
 
-            if (precioMin != null) {
+            if (precioMin != null && !precioMin.isEmpty()) {
                 min = Double.parseDouble(precioMin);
             }
 
-            if (precioMax != null) {
+            if (precioMax != null && !precioMax.isEmpty()) {
                 max = Double.parseDouble(precioMax);
             }
 
-            for (Producto producto : productos) {
+            for (Producto producto : TodosLosProductos) {
                 double precio = producto.getPrecio();
                 if (precio >= min && precio <= max) {
                     productosFiltrados.add(producto);
                 }
             }
+                request.setAttribute("productosFiltrados", productosFiltrados);
+                request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
         } else {
-            productosFiltrados.addAll(productos);
+            productosFiltrados.addAll(TodosLosProductos);
         }
 
         if (cadena != null && !cadena.isEmpty()) {
             ArrayList<Producto> productosEncontrados = new ArrayList<Producto>();
-            for (Producto producto : productos) {
+            for (Producto producto : TodosLosProductos) {
                 if (producto.getCodigo().toLowerCase().contains(cadena.toLowerCase()) || producto.getNombre().toLowerCase().contains(cadena.toLowerCase())) {
                     productosEncontrados.add(producto);
                 }
@@ -86,7 +88,10 @@ public class VerProductos extends HttpServlet {
             request.setAttribute("productosEncontrados", productosEncontrados);
             request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
         } else {
-            request.setAttribute("productosEncontrados", productosFiltrados);
+        	 pm.conectar();
+             TodosLosProductos = pm.productosConNombreSeccion(); //
+             pm.cerrar();
+            request.setAttribute("TodosLosProductos", TodosLosProductos);
             request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
         }
     }

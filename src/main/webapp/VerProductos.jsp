@@ -66,7 +66,7 @@
       </tbody>
     </c:if>
     <tbody>
-      <c:forEach items="${productos}" var="producto">
+      <c:forEach items="${TodosLosProductos}" var="producto">
         <tr>
           <td>${producto.id}</td>
           <td>${producto.codigo}</td>
