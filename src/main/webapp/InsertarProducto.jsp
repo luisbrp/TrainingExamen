@@ -17,7 +17,7 @@
 	</div>
 	</c:if>
 		<form method="post" action="InsertarProducto">
-  		<div class="form-group">
+  		
     		<div class="form-group">
 		    <label>Codigo:</label>
 		    <input type="text" name="codigo" required 
@@ -26,7 +26,7 @@
 		           onchange="this.setCustomValidity('')" /><br/>
   		</div>
   		
-  		 <div class="form-group">
+  		 
     		<div class="form-group">
 		    <label>Nombre:</label>
 		    <input type="text" name="nombre" required 
@@ -35,44 +35,44 @@
 		           onchange="this.setCustomValidity('')" /><br/>
   		</div>
   		
-  		<div class="form-group">
+  		
     		<div class="form-group">
 		    <label>cantidad:</label>
 		    <input type="text" name="cantidad" required 
 		           class="form-control" 
 		           oninvalid="this.setCustomValidity('Por favor, ingresa una fecha válida')" 
 		           onchange="this.setCustomValidity('')" /><br/>
-  		</div>
+  			</div>
   		
-  		<div class="form-group">
+  		
     		<div class="form-group">
 		    <label>precio:</label>
 		    <input type="text" name="precio" required 
 		           class="form-control" 
 		           oninvalid="this.setCustomValidity('Por favor, ingresa una fecha válida')" 
 		           onchange="this.setCustomValidity('')" /><br/>
-  		</div>
+  			</div>
   		
-  		<div class="form-group">
+  		
     		<div class="form-group">
 		    <label>caducidad:</label>
 		    <input type="Date" name="caducidad" required 
 		           class="form-control" 
 		           oninvalid="this.setCustomValidity('Por favor, ingresa una fecha válida')" 
 		           onchange="this.setCustomValidity('')" /><br/>
-  		</div>
+  			</div>
   		
-  		<div class="form-group">
-  			<label for="seccion">Selecciona una seccion:</label>
-				  <select class="form-control" id="seccion" name="id_seccion"  required>
-				    <option value="">--Selecciona una seccion</option>
-				    <c:forEach items="${secciones}" var="seccion">
-				      <option value="${seccion.id}">${seccion.nombre}</option>
-				    </c:forEach>
-				  </select>
-  		</div>
+	  		<div class="form-group">
+	  			<label for="seccion">Selecciona una seccion:</label>
+					  <select class="form-control" id="seccion" name="id_seccion"  required>
+					    <option value="">--Selecciona una seccion</option>
+					    <c:forEach items="${secciones}" var="seccion">
+					      <option value="${seccion.id}">${seccion.nombre}</option>
+					    </c:forEach>
+					  </select>
+	  		</div>
   		
-  		</div>
+  
   		<input type="submit" value="Guardar" class="btn btn-primary mt-4"/>
   		</form>
 </body>

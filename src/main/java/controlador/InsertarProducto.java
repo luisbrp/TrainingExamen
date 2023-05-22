@@ -61,7 +61,7 @@ public class InsertarProducto extends HttpServlet {
 		int cantidad = Integer.parseInt(request.getParameter("cantidad"));
 		double precio = Double.parseDouble(request.getParameter("precio"));
 		String caducidadP = request.getParameter("caducidad");
-		String id_seccionString = request.getParameter("id_seccion");
+		int id_seccion = Integer.parseInt(request.getParameter("id_seccion"));
 		
 		
 		//Consultar codigo en la base de datos
@@ -75,14 +75,14 @@ public class InsertarProducto extends HttpServlet {
 		try {
 			caducidad = formato.parse(caducidadP);
 			java.util.Date fechaActual = new Date();
-			
-			if (codigoConsultado == codigo && cantidad >= 0 && precio >= 0 && caducidad.after(fechaActual) && id_seccionString != null && !id_seccionString.isEmpty()) {
+			System.out.println(id_seccion);
+			if (codigoConsultado == null || codigoConsultado.equals(codigo) && cantidad >= 0 && precio >= 0 && caducidad.after(fechaActual) && id_seccion > 0) {
+				
 				producto.setCodigo(codigo);
 				producto.setNombre(nombre);
-				producto.setCaducidad(caducidad);
+				producto.setCantidad(cantidad);
 				producto.setPrecio(precio);
 				producto.setCaducidad(caducidad);
-				int id_seccion = Integer.parseInt(id_seccionString);
 				Seccion seccion = new Seccion();
 				seccion.setId(id_seccion);
 				producto.setSeccion(seccion);

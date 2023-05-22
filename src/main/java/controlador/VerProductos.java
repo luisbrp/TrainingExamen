@@ -31,45 +31,36 @@ public class VerProductos extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ProductoModelo pm = new ProductoModelo();
-		
-		
-		String cadena = request.getParameter("cadena");
-		
-		//comprobar si llega la cadena para el buscador
-		if (cadena != null && !cadena.isEmpty()) {
-			pm.conectar();
-			ArrayList<Producto> productos = pm.productos();
-			
-			Iterator<Producto> it = productos.iterator();
-			ArrayList<Producto> productosEncontrados =  new ArrayList<Producto>();
-			while (it.hasNext()) {
-				for (Producto producto : productos) {
-					if (producto.getCodigo().toLowerCase().contains(cadena) || (producto.getNombre().toLowerCase().contains(cadena))) {
-						productosEncontrados.add(producto);
-						System.out.println(productosEncontrados.toString());
-						request.setAttribute("productosEncontrados", productosEncontrados);
-						request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
-					}
-				}
-			}
-			
-		} else {
-			pm.conectar();
-			ArrayList<Producto> prodcutos = pm.productosConNombreSeccion();
-			pm.cerrar();
-			request.setAttribute("productos", prodcutos);
-			request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
-		}
-		
-		
-		
-		
-		
-		
-		
-	}
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ProductoModelo pm = new ProductoModelo();
+
+        String cadena = request.getParameter("cadena");
+
+        // Comprobar si llega la cadena para el buscador
+        if (cadena != null && !cadena.isEmpty()) {
+            pm.conectar();
+            ArrayList<Producto> productos = pm.productosConNombreSeccion();
+            pm.cerrar();
+
+            ArrayList<Producto> productosEncontrados = new ArrayList<Producto>();
+            for (Producto producto : productos) {
+                if (producto.getCodigo().toLowerCase().contains(cadena.toLowerCase()) || producto.getNombre().toLowerCase().contains(cadena.toLowerCase())) {
+                    productosEncontrados.add(producto);
+                }
+            }
+
+            request.setAttribute("productosEncontrados", productosEncontrados);
+            request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
+        } else {
+            pm.conectar();
+            ArrayList<Producto> productos = pm.productosConNombreSeccion();
+            pm.cerrar();
+
+            request.setAttribute("productos", productos);
+            request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
+        }
+    }
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

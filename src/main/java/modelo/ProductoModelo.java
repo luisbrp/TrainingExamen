@@ -29,7 +29,14 @@ public class ProductoModelo extends Conector {
 				p.setPrecio(rs.getDouble("precio"));
 				p.setCantidad(rs.getInt("cantidad"));
 				p.setSeccion(sm.seccion(rs.getInt("id_seccion")));
-				p.setCaducidad(new Date(rs.getDate("caducidad").getTime()));
+				
+				Date fechaCaducidad = rs.getDate("caducidad");
+	            if (rs.wasNull()) {
+	                p.setCaducidad(null);
+	            } else {
+	                p.setCaducidad(new Date(fechaCaducidad.getTime()));
+	            }
+
 				productos.add(p);
 			}
 		} catch (SQLException e) {
@@ -40,35 +47,43 @@ public class ProductoModelo extends Conector {
 	}
 	
 	public ArrayList<Producto> productosConNombreSeccion() {
-		SeccionModelo sm = new SeccionModelo();
-		sm.setCon(con);
-		String sql = "SELECT p.*, s.nombre FROM productos p JOIN secciones s on s.id = p.id_seccion";
-		Statement st;
+	    SeccionModelo sm = new SeccionModelo();
+	    sm.setCon(con);
+	    String sql = "SELECT p.*, s.nombre FROM productos p JOIN secciones s on s.id = p.id_seccion";
+	    Statement st;
 
-		ArrayList<Producto> productos = new ArrayList<Producto>();
-		try {
-			st = con.createStatement();
-			ResultSet rs = st.executeQuery(sql);
+	    ArrayList<Producto> productos = new ArrayList<Producto>();
+	    try {
+	        st = con.createStatement();
+	        ResultSet rs = st.executeQuery(sql);
 
-			Producto p;
-			while (rs.next()) {
-				p = new Producto();
-				p.setId(rs.getInt("id"));
-				p.setNombre(rs.getString("nombre"));
-				p.setCodigo(rs.getString("codigo"));
-				p.setPrecio(rs.getDouble("precio"));
-				p.setCantidad(rs.getInt("cantidad"));
-				p.setSeccion(sm.seccion(rs.getInt("id_seccion")));
-				p.setCaducidad(new Date(rs.getDate("caducidad").getTime()));
-				p.setNombreSeccion(rs.getString(8));
-				productos.add(p);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	        Producto p;
+	        while (rs.next()) {
+	            p = new Producto();
+	            p.setId(rs.getInt("id"));
+	            p.setNombre(rs.getString("nombre"));
+	            p.setCodigo(rs.getString("codigo"));
+	            p.setPrecio(rs.getDouble("precio"));
+	            p.setCantidad(rs.getInt("cantidad"));
+	            p.setSeccion(sm.seccion(rs.getInt("id_seccion")));
 
-		return productos;
+	            Date fechaCaducidad = rs.getDate("caducidad");
+	            if (rs.wasNull()) {
+	                p.setCaducidad(null);
+	            } else {
+	                p.setCaducidad(new Date(fechaCaducidad.getTime()));
+	            }
+
+	            p.setNombreSeccion(rs.getString(8));
+	            productos.add(p);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return productos;
 	}
+
 
 	public boolean registrar(Producto producto) {
 		PreparedStatement pst = null;
