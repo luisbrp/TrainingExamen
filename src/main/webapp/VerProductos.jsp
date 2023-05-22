@@ -10,52 +10,75 @@
 <title>Insert title here</title>
 </head>
 <body>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">id</th>
-      <th scope="col">codigo</th>
-      <th scope="col">nombre</th>
-      <th scope="col">cantidad</th>
-      <th scope="col">precio</th>
-      <th scope="col">caducidad</th>
-      <th scope="col">Nombre de Seccion</th>
-      <th><form class="d-flex search-form" method="GET" action="VerProductos">
-           <input class="form-control me-2 ms-2" type="search" placeholder="Buscar (Nombre o codigo)" aria-label="Buscar" name="cadena">
-           <button class="btn btn-outline-success" type="submit">Buscar</button>
-          </form></th>
-    </tr>
-  </thead>
-  <c:if test="${productosEncontrados != null}">
-  <tbody>
-  <c:forEach items="${productosEncontrados}" var="producto">
-  	<tr>
-      <td>${producto.id}</td>
-      <td>${producto.codigo}</td>
-      <td>${producto.nombre}</td>
-      <td>${producto.cantidad}</td>
-      <td>${producto.precio}</td>
-      <td>${producto.caducidad}</td>
-      <td>${producto.nombreSeccion}</td>
-      <td><a href="ModificarProducto?id=${producto.id}" class="btn btn-primary">Editar</a></td>
-    </tr>
-  </c:forEach>
-  </tbody>
-  </c:if>
-  <tbody>
-  <c:forEach items="${productos}" var="producto">
-  	<tr>
-      <td>${producto.id}</td>
-      <td>${producto.codigo}</td>
-      <td>${producto.nombre}</td>
-      <td>${producto.cantidad}</td>
-      <td>${producto.precio}</td>
-      <td>${producto.caducidad}</td>
-      <td>${producto.nombreSeccion}</td>
-      <td><a href="ModificarProducto?id=${producto.id}" class="btn btn-primary">Editar</a></td>
-    </tr>
-  </c:forEach>
-  </tbody>
-</table>
+  <form class="d-flex search-form" method="GET" action="VerProductos">
+    <input class="form-control me-2 ms-2" type="number" step=0.1 placeholder="Precio mínimo" aria-label="Precio mínimo" name="precioMin">
+    <input class="form-control me-2 ms-2" type="number" step=0.1 placeholder="Precio máximo" aria-label="Precio máximo" name="precioMax">
+    <button class="btn btn-outline-success me-2 ms-2" type="submit">Filtrar</button>
+    <button class="btn btn-outline-dark" name="recargar">Recargar</button>
+  </form>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">id</th>
+        <th scope="col">codigo</th>
+        <th scope="col">nombre</th>
+        <th scope="col">cantidad</th>
+        <th scope="col">precio</th>
+        <th scope="col">caducidad</th>
+        <th scope="col">Nombre de Seccion</th>
+        <th><form class="d-flex search-form" method="GET" action="VerProductos">
+			    <input class="form-control me-2 ms-2" type="search" placeholder="Buscar (Nombre o código)" aria-label="Buscar" name="cadena">
+			    <button class="btn btn-outline-success" type="submit">Buscar</button>
+			 </form></th>
+      </tr>
+    </thead>
+    <c:if test="${productosEncontrados != null}">
+      <tbody>
+        <c:forEach items="${productosEncontrados}" var="producto">
+          <tr>
+            <td>${producto.id}</td>
+            <td>${producto.codigo}</td>
+            <td>${producto.nombre}</td>
+            <td>${producto.cantidad}</td>
+            <td>${producto.precio}</td>
+            <td>${producto.caducidad}</td>
+            <td>${producto.nombreSeccion}</td>
+            <td><a href="ModificarProducto?id=${producto.id}" class="btn btn-primary">Editar</a></td>
+          </tr>
+        </c:forEach>
+      </tbody>
+    </c:if>
+    <c:if test="${productosFiltrados != null}">
+      <tbody>
+        <c:forEach items="${productosFiltrados}" var="producto">
+          <tr>
+            <td>${producto.id}</td>
+            <td>${producto.codigo}</td>
+            <td>${producto.nombre}</td>
+            <td>${producto.cantidad}</td>
+            <td>${producto.precio}</td>
+            <td>${producto.caducidad}</td>
+            <td>${producto.nombreSeccion}</td>
+            <td><a href="ModificarProducto?id=${producto.id}" class="btn btn-primary">Editar</a></td>
+          </tr>
+        </c:forEach>
+      </tbody>
+    </c:if>
+    <tbody>
+      <c:forEach items="${productos}" var="producto">
+        <tr>
+          <td>${producto.id}</td>
+          <td>${producto.codigo}</td>
+          <td>${producto.nombre}</td>
+          <td>${producto.cantidad}</td>
+          <td>${producto.precio}</td>
+          <td>${producto.caducidad}</td>
+          <td>${producto.nombreSeccion}</td>
+          <td><a href="ModificarProducto?id=${producto.id}" class="btn btn-primary">Editar</a></td>
+        </tr>
+      </c:forEach>
+    </tbody>
+  </table>
 </body>
 </html>
