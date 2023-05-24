@@ -176,7 +176,12 @@ public class ProductoModelo extends Conector {
 				producto.setNombre(rs.getString("nombre"));
 				producto.setCantidad(rs.getInt("cantidad"));
 				producto.setPrecio(rs.getDouble("precio"));
-				producto.setCaducidad(new Date(rs.getDate("Caducidad").getTime()));
+				Date fechaCaducidad = rs.getDate("caducidad");
+	            if (rs.wasNull()) {
+	                producto.setCaducidad(null);
+	            } else {
+	            	producto.setCaducidad(new Date(fechaCaducidad.getTime()));
+	            }
 				Seccion s = new Seccion();
 				s.setId(rs.getInt("id_seccion"));
 				producto.setSeccion(s);
@@ -191,7 +196,7 @@ public class ProductoModelo extends Conector {
 		}
 	}
 
-	private ArrayList<Supermercado> getSupermercados(int idProducto) {
+	public ArrayList<Supermercado> getSupermercados(int idProducto) {
 		ArrayList<Supermercado> supermercados = new ArrayList<Supermercado>();
 		String sql = "select * from productos_supermercados where id_producto = ?";
 		PreparedStatement pst;
@@ -206,7 +211,6 @@ public class ProductoModelo extends Conector {
 			while (rs.next()) {
 				supermercado = new Supermercado();
 				supermercado.setId(rs.getInt("id_supermercado"));
-				
 				supermercados.add(supermercado);
 			}
 		} catch (SQLException e) {
@@ -358,5 +362,24 @@ public class ProductoModelo extends Conector {
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}		
-		} 
+		}
+
+		public void eliminarProductoSupermercado(int id, Supermercado supermercado) {
+			PreparedStatement pst = null;
+			String sql = "DELETE FROM productos_supermercados WHERE id_producto = ? AND id_supermercado = ?";
+			try {
+				pst = con.prepareStatement(sql);
+				pst.setInt(1, id);
+				pst.setInt(2, supermercado.getId());
+				pst.execute();
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+				
+			}
+		}
+			
+	
+		
+		
 	}
