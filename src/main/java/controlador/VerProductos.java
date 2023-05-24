@@ -45,11 +45,6 @@ public class VerProductos extends HttpServlet {
 
         ArrayList<Producto> productosFiltrados = new ArrayList<Producto>();
         
-        
-        //recibir parametros asc o desc para ordenar
-        
- 
-        
         //Recargar
         String recargar = request.getParameter("recargar");
         boolean recargarProductos = (recargar != null && recargar.equals("true"));

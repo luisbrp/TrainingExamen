@@ -80,7 +80,8 @@
           <td>${producto.precio}</td>
           <td>${producto.caducidad}</td>
           <td>${producto.nombreSeccion}</td>
-          <td><a href="ModificarProducto?id=${producto.id}" class="btn btn-secondary">Editar</a></td>
+          <td><a href="ModificarProducto?id=${producto.id}" class="btn btn-secondary">Editar</a>
+          <a href="EliminarProducto?id=${producto.id}" class="btn btn-danger">Eliminar</a></td>
         </tr>
       </c:forEach>
     </tbody>

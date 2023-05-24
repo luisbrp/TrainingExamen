@@ -345,5 +345,18 @@ public class ProductoModelo extends Conector {
 		}
 		return null;
 
+		}
+
+		public void disminuirCantidad(int id) {
+			String sql = "UPDATE productos SET cantidad= (SELECT cantidad FROM productos where id = ?) - 1 WHERE id = ?";
+			PreparedStatement pst;
+				try {
+					pst = con.prepareStatement(sql);
+					pst.setInt(1, id);
+					pst.setInt(2, id);
+					pst.execute();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}		
 		} 
 	}
