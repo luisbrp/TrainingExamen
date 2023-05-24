@@ -3,7 +3,7 @@ package modelo;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Producto {
+public class Producto  {
 	@Override
 	public String toString() {
 		return "Producto [id=" + id + ", codigo=" + codigo + ", nombre=" + nombre + ", precio=" + precio + ", cantidad="
@@ -75,4 +75,5 @@ public class Producto {
 	public void setSupermercados(ArrayList<Supermercado> supermercados) {
 		this.supermercados = supermercados;
 	}
+	
 }

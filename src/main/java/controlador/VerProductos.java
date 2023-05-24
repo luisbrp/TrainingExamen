@@ -2,6 +2,7 @@ package controlador;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 
 import javax.servlet.ServletException;
@@ -43,7 +44,13 @@ public class VerProductos extends HttpServlet {
         pm.cerrar();
 
         ArrayList<Producto> productosFiltrados = new ArrayList<Producto>();
-
+        
+        
+        //recibir parametros asc o desc para ordenar
+        
+ 
+        
+        //Recargar
         String recargar = request.getParameter("recargar");
         boolean recargarProductos = (recargar != null && recargar.equals("true"));
 
@@ -55,8 +62,8 @@ public class VerProductos extends HttpServlet {
 
         // Filtrar por precio min y max
         if (precioMin != null && !precioMin.isEmpty() || precioMax != null && !precioMax.isEmpty()) {
-            double min = Double.MIN_VALUE;
-            double max = Double.MAX_VALUE;
+	            double min = Double.MIN_VALUE;
+	            double max = Double.MAX_VALUE;
 
                 min = Double.parseDouble(precioMin);
                 max = Double.parseDouble(precioMax);
@@ -73,6 +80,7 @@ public class VerProductos extends HttpServlet {
             productosFiltrados.addAll(TodosLosProductos);
         }
 
+        //comprobar que la cadena para el buscador no sea null
         if (cadena != null && !cadena.isEmpty()) {
             ArrayList<Producto> productosEncontrados = new ArrayList<Producto>();
             for (Producto producto : TodosLosProductos) {
@@ -84,15 +92,13 @@ public class VerProductos extends HttpServlet {
             request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
         } else {
         	 pm.conectar();
-             TodosLosProductos = pm.productosConNombreSeccion(); //
+             TodosLosProductos = pm.productosConNombreSeccion(); 
              pm.cerrar();
-            request.setAttribute("TodosLosProductos", TodosLosProductos);
-            request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
+             
+             request.setAttribute("TodosLosProductos", TodosLosProductos);
+             request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
         }
     }
-
-
-
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

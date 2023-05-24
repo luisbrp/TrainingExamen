@@ -21,7 +21,10 @@
     <thead>
       <tr>
         <th scope="col">id</th>
-        <th scope="col">codigo</th>
+        <th scope="col" class="ms-2">codigo
+       	<a href="OrdenAscendente?" class="ms-2">A-Z</a>
+       	<a href="OrdenDescendente?">Z-A</a>
+        </th>
         <th scope="col">nombre</th>
         <th scope="col">cantidad</th>
         <th scope="col">precio</th>
@@ -66,6 +69,7 @@
       </tbody>
     </c:if>
     <tbody>
+    
       <c:forEach items="${TodosLosProductos}" var="producto">
         <tr>
           <td>${producto.id}</td>
