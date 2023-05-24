@@ -30,6 +30,7 @@
         <th scope="col">precio</th>
         <th scope="col">caducidad</th>
         <th scope="col">Nombre de Seccion</th>
+        <th><a href="InsertarProducto?" class="btn btn-primary">Insertar</a></th>
         <th><form class="d-flex search-form" method="GET" action="VerProductos">
 			    <input class="form-control me-2 ms-2" type="search" placeholder="Buscar (Nombre o código)" aria-label="Buscar" name="cadena">
 			    <button class="btn btn-outline-success" type="submit">Buscar</button>
@@ -79,7 +80,7 @@
           <td>${producto.precio}</td>
           <td>${producto.caducidad}</td>
           <td>${producto.nombreSeccion}</td>
-          <td><a href="ModificarProducto?id=${producto.id}" class="btn btn-primary">Editar</a></td>
+          <td><a href="ModificarProducto?id=${producto.id}" class="btn btn-secondary">Editar</a></td>
         </tr>
       </c:forEach>
     </tbody>

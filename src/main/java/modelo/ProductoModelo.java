@@ -262,6 +262,21 @@ public class ProductoModelo extends Conector {
 		}
 
 	}
+	
+	public void insertarProductoSupermercado(Producto productoConId, int id_supermercado) {
+		String sql = "INSERT INTO productos_supermercados (id_producto, id_supermercado) VALUES (?, ?)";
+		PreparedStatement pst;
+		try {
+			pst = con.prepareStatement(sql);
+			pst.setInt(1, productoConId.getId());
+			pst.setInt(2, id_supermercado);
+			
+			pst.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
 
 	public boolean productoEnSupermercado(int idProducto, int idSupermercado) {
 		PreparedStatement pst = null;
@@ -308,4 +323,27 @@ public class ProductoModelo extends Conector {
 		return codigoBBDD;
 	}
 
-}
+	public Producto productoConId(Producto producto) {
+		String sql = "SELECT * FROM productos WHERE codigo = ?";
+		PreparedStatement pst;
+		try {
+			pst = con.prepareStatement(sql);
+			pst.setString(1, producto.getCodigo());
+			
+			ResultSet rs = pst.executeQuery();
+			if (rs.next()) {
+				Producto productoConId = new Producto();
+				productoConId.setId(rs.getInt("id"));
+				productoConId.setCodigo(rs.getString("codigo"));
+				productoConId.setNombre(rs.getString("nombre"));
+				productoConId.setCantidad(rs.getInt("cantidad"));
+				productoConId.setPrecio(rs.getDouble("precio"));
+				return productoConId;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+		} 
+	}

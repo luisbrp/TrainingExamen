@@ -71,9 +71,17 @@
 					    </c:forEach>
 					  </select>
 	  		</div>
+	  		
+	  		<div class="form-group mt-4">
+	  		<c:forEach items="${supermercados}" var="supermercado">
+	  		<input type="checkbox" id="${supermercado.id}" name="ids_supermercado" value="${supermercado.id}">
+			<label for="${supermercado.id}">${supermercado.nombre}</label><br>
+			 </c:forEach>
+			</div>
   		
   
   		<input type="submit" value="Guardar" class="btn btn-primary mt-4"/>
+  		<a href="VerProductos?" class="btn btn-secondary mt-4 ms-5">Volver</a></td>
   		</form>
 </body>
 </html>

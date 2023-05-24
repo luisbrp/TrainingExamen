@@ -16,6 +16,8 @@ import modelo.Producto;
 import modelo.ProductoModelo;
 import modelo.Seccion;
 import modelo.SeccionModelo;
+import modelo.Supermercado;
+import modelo.SupermercadoModelo;
 
 /**
  * Servlet implementation class InsertarUsuario
@@ -39,10 +41,18 @@ public class InsertarProducto extends HttpServlet {
 		SeccionModelo sm = new SeccionModelo();
 		ArrayList<Seccion> secciones = new ArrayList<Seccion>();
 		
+		SupermercadoModelo smm = new SupermercadoModelo();
+		ArrayList<Supermercado> supermercados = new ArrayList<Supermercado>();
+		
+		smm.conectar();
+		supermercados = smm.supermercados();
+		smm.cerrar();
+		
 		sm.conectar();
 		secciones = sm.secciones();
 		sm.cerrar();
 		
+		request.setAttribute("supermercados", supermercados);
 		request.setAttribute("secciones", secciones);
 		request.getRequestDispatcher("InsertarProducto.jsp").forward(request, response);
 	}
@@ -62,8 +72,15 @@ public class InsertarProducto extends HttpServlet {
 		double precio = Double.parseDouble(request.getParameter("precio"));
 		String caducidadP = request.getParameter("caducidad");
 		int id_seccion = Integer.parseInt(request.getParameter("id_seccion"));
-		
-		
+	
+		//recoger los ids de los supermercados
+		String[] valoresSupermercado = request.getParameterValues("ids_supermercado");
+		int[] ids_supermercado = new int[valoresSupermercado.length];
+
+		for (int i = 0; i < valoresSupermercado.length; i++) {
+		    ids_supermercado[i] = Integer.parseInt(valoresSupermercado[i]);
+		}
+
 		//Consultar codigo en la base de datos
 		String codigoConsultado = null;
 		
@@ -75,7 +92,6 @@ public class InsertarProducto extends HttpServlet {
 		try {
 			caducidad = formato.parse(caducidadP);
 			java.util.Date fechaActual = new Date();
-			System.out.println(id_seccion);
 			if (codigoConsultado == null || codigoConsultado.equals(codigo) && cantidad >= 0 && precio >= 0 && caducidad.after(fechaActual) && id_seccion > 0) {
 				
 				producto.setCodigo(codigo);
@@ -88,6 +104,17 @@ public class InsertarProducto extends HttpServlet {
 				producto.setSeccion(seccion);
 				pm.conectar();
 				pm.insertar(producto);
+
+				//Sacar el id del producto nuevo que se ha insertado
+				Producto productoConId = pm.productoConId(producto);
+				
+				//Comprobar que el id no sea nulo y si no lo es, realizar el insert en la tabla productos_supermercados
+				if (productoConId != null) {
+				    for (int id_supermercado: ids_supermercado) {
+				        pm.insertarProductoSupermercado(productoConId, id_supermercado);
+				    }
+				}
+				
 				pm.cerrar();
 			} else {
 				error = true;
