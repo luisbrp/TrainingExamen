@@ -19,24 +19,38 @@
   
   <table class="table">
     <thead>
-      <tr>
-        <th scope="col">id</th>
-        <th scope="col" class="ms-2">codigo
-       	<a href="OrdenAscendente?" class="ms-2">A-Z</a>
-       	<a href="OrdenDescendente?">Z-A</a>
-        </th>
-        <th scope="col">nombre</th>
-        <th scope="col">cantidad</th>
-        <th scope="col">precio</th>
-        <th scope="col">caducidad</th>
-        <th scope="col">Nombre de Seccion</th>
-        <th><a href="InsertarProducto?" class="btn btn-primary">Insertar</a></th>
-        <th><form class="d-flex search-form" method="GET" action="VerProductos">
-			    <input class="form-control me-2 ms-2" type="search" placeholder="Buscar (Nombre o código)" aria-label="Buscar" name="cadena">
-			    <button class="btn btn-outline-success" type="submit">Buscar</button>
-			 </form></th>
-      </tr>
-    </thead>
+  <tr>
+    <th scope="col">id</th>
+    <th scope="col" class="ms-2">codigo</th>
+    <th scope="col">nombre</th>
+    <th scope="col">cantidad</th>
+    <th scope="col">precio</th>
+    <th scope="col">caducidad</th>
+    <th scope="col">Nombre de Seccion</th>
+    <th><a href="InsertarProducto?" class="btn btn-primary">Insertar</a></th>
+    <th>
+      <form class="d-flex search-form" method="GET" action="VerProductos">
+        <input class="form-control me-2 ms-2" type="search" placeholder="Buscar (Nombre o código)" aria-label="Buscar" name="cadena">
+        <button class="btn btn-outline-success" type="submit">Buscar</button>
+      </form>
+    </th>
+  </tr>
+  <tr>
+    <th scope="col"></th>
+    <th scope="col" class="ms-2">
+      <a href="OrdenAscendente?" style= "color: black">A-Z</a>
+      <a href="OrdenDescendente?" class="me-4" style= "color: black">Z-A</a>
+    </th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+  </tr>
+</thead>
+    
     <c:if test="${productosEncontrados != null}">
       <tbody>
         <c:forEach items="${productosEncontrados}" var="producto">
@@ -48,7 +62,8 @@
             <td>${producto.precio}</td>
             <td>${producto.caducidad}</td>
             <td>${producto.nombreSeccion}</td>
-            <td><a href="ModificarProducto?id=${producto.id}" class="btn btn-primary">Editar</a></td>
+            <td><a href="ModificarProducto?id=${producto.id}" class="btn btn-secondary">Editar</a>
+          	<a href="EliminarProducto?id=${producto.id}" class="btn btn-danger">Eliminar</a></td>
           </tr>
         </c:forEach>
       </tbody>
@@ -64,7 +79,8 @@
             <td>${producto.precio}</td>
             <td>${producto.caducidad}</td>
             <td>${producto.nombreSeccion}</td>
-            <td><a href="ModificarProducto?id=${producto.id}" class="btn btn-primary">Editar</a></td>
+            <td><a href="ModificarProducto?id=${producto.id}" class="btn btn-secondary">Editar</a>
+          	<a href="EliminarProducto?id=${producto.id}" class="btn btn-danger">Eliminar</a></td>
           </tr>
         </c:forEach>
       </tbody>
