@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,7 +47,8 @@
     <th scope="col"></th>
     <th scope="col"></th>
     <th scope="col"></th>
-    <th scope="col"></th>
+    <th> <form class="d-flex search-form" method="GET" action="EliminarMultiple"> <input class="form-control me-2 ms-2" type="search" placeholder="" aria-label="Buscar" name="codigos" value="${producto.codigo}"> <button class="btn btn-outline-warning" type="submit">Eliminar Multiple</button> </form> 
+    </th>
   </tr>
 </thead>
     
