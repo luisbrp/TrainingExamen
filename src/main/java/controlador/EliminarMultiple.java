@@ -40,8 +40,8 @@ public class EliminarMultiple extends HttpServlet {
 		pm.conectar();
 		ArrayList<Producto> TodosLosProductos = pm.productos();
 		if(codigosString == null) {
-			request.setAttribute("TodosLosProductos", TodosLosProductos);
-			request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
+			 response.sendRedirect("VerProductos");
+             return;
 			
 		} else {
 			String[] CodigoPartes = codigosString.split(",");
@@ -52,8 +52,8 @@ public class EliminarMultiple extends HttpServlet {
 					 for (String codigo : CodigoPartes) {
 						 if(producto.getCodigo().contains(codigo)) {
 							 pm.eliminarCodigoString(CodigoPartes);
-							 request.setAttribute("TodosLosProductos", TodosLosProductos);
-							 request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
+							 response.sendRedirect("VerProductos");
+		                     return;
 						 }  else if (!producto.getCodigo().contains(codigo)) {
 							 error = true;
 							 request.setAttribute("error", error);
