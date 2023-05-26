@@ -10,6 +10,12 @@
 <title>Insert title here</title>
 </head>
 <body>
+
+<c:if test="${error eq true }">
+	<div class="alert alert-danger" role="alert">
+  		Error, verifique los codigos.
+	</div>
+	</c:if>
   <form class="d-flex search-form" method="GET" action="VerProductos">
     <input class="form-control me-2 ms-2" type="number" step=0.1 placeholder="Precio mínimo" aria-label="Precio mínimo" name="precioMin">
     <input class="form-control me-2 ms-2" type="number" step=0.1 placeholder="Precio máximo" aria-label="Precio máximo" name="precioMax">

@@ -143,13 +143,15 @@ public class ProductoModelo extends Conector {
 		}
 	}
 	
-	public boolean eliminarCodigoString(String codigo) {
+	public boolean eliminarCodigoString(String[] codigoPartes) {
 		PreparedStatement pst = null;
 		String sql = "DELETE FROM productos WHERE codigo = ?";
 		try {
-			pst = con.prepareStatement(sql);
-			pst.setString(1, codigo);
-			pst.execute();
+			for (String partes : codigoPartes) {
+				pst = con.prepareStatement(sql);
+				pst.setString(1, partes);
+				pst.execute();
+			}
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();

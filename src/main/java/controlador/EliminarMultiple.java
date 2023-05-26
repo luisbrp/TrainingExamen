@@ -34,21 +34,39 @@ public class EliminarMultiple extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ProductoModelo pm = new ProductoModelo();
-		
+		boolean error = false;
 		String codigosString = request.getParameter("codigos");
-		System.out.println(codigosString);
 		
-		String[] strParts = codigosString.split(",");
-        
 		pm.conectar();
+		ArrayList<Producto> TodosLosProductos = pm.productos();
+		if(codigosString == null) {
+			request.setAttribute("TodosLosProductos", TodosLosProductos);
+			request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
 			
-				for(String part : strParts) {
-	            	System.out.println(part);
-	            	pm.eliminarCodigoString(part);
-	            	response.sendRedirect("VerProductos");
-	            }
+		} else {
+			String[] CodigoPartes = codigosString.split(",");
 			
+			if(CodigoPartes != null) {
+				
+				for (Producto producto : TodosLosProductos) {
+					 for (String codigo : CodigoPartes) {
+						 if(producto.getCodigo().contains(codigo)) {
+							 pm.eliminarCodigoString(CodigoPartes);
+							 request.setAttribute("TodosLosProductos", TodosLosProductos);
+							 request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
+						 }  else if (!producto.getCodigo().contains(codigo)) {
+							 error = true;
+							 request.setAttribute("error", error);
+							 request.setAttribute("TodosLosProductos", TodosLosProductos);
+							 request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
+						 }
+					}
+				}
+				
+			} 	
+		}
 		pm.cerrar();
+		
 	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
