@@ -36,36 +36,45 @@ public class EliminarMultiple extends HttpServlet {
 		ProductoModelo pm = new ProductoModelo();
 		boolean error = false;
 		String codigosString = request.getParameter("codigos");
-		
+
 		pm.conectar();
 		ArrayList<Producto> TodosLosProductos = pm.productos();
-		if(codigosString == null) {
-			 response.sendRedirect("VerProductos");
-             return;
-			
+
+		if (codigosString == null) {
+		    response.sendRedirect("VerProductos");
+		    return;
 		} else {
-			String[] CodigoPartes = codigosString.split(",");
-			
-			if(CodigoPartes != null) {
-				
-				for (Producto producto : TodosLosProductos) {
-					 for (String codigo : CodigoPartes) {
-						 if(producto.getCodigo().contains(codigo)) {
-							 pm.eliminarCodigoString(CodigoPartes);
-							 response.sendRedirect("VerProductos");
-		                     return;
-						 }  else if (!producto.getCodigo().contains(codigo)) {
-							 error = true;
-							 request.setAttribute("error", error);
-							 request.setAttribute("TodosLosProductos", TodosLosProductos);
-							 request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
-						 }
-					}
-				}
-				
-			} 	
+		    String[] CodigoPartes = codigosString.split(",");
+		    ArrayList<String> codigosQueCoinciden = new ArrayList<>();
+		    ArrayList<String> codigosQueNoCoinciden = new ArrayList<>();
+
+		    if (CodigoPartes != null) {
+		        for (String codigo : CodigoPartes) {
+		            boolean codigoQueCoincide = false;
+		            for (Producto producto : TodosLosProductos) {
+		                if (producto.getCodigo().contains(codigo)) {
+		                	codigoQueCoincide = true;
+		                    codigosQueCoinciden.add(codigo);
+		                    System.out.println(codigosQueCoinciden);
+		                }
+		            }
+		            if (!codigoQueCoincide) {
+		            	codigosQueNoCoinciden.add(codigo);
+		            }
+		        }
+		        System.out.println("Linea 64:" +codigosQueNoCoinciden);
+		        if (codigosQueNoCoinciden.isEmpty()) {
+		        	pm.eliminarCodigoString(codigosQueCoinciden);
+		        }
+		        
+		        error = !codigosQueNoCoinciden.isEmpty();
+		        request.setAttribute("error", error);
+		        request.setAttribute("TodosLosProductos", TodosLosProductos);
+		        request.getRequestDispatcher("VerProductos.jsp").forward(request, response);
+		    }
 		}
 		pm.cerrar();
+
 		
 	}
 	/**

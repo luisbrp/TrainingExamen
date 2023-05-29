@@ -50,9 +50,8 @@ public class VerProductos extends HttpServlet {
         boolean recargarProductos = (recargar != null && recargar.equals("true"));
 
         if (recargarProductos) {
-            pm.conectar();
-            TodosLosProductos = pm.productosConNombreSeccion(); // Recargar productos
-            pm.cerrar();
+            response.sendRedirect("VerProductos");
+            return;
         }
 
         // Filtrar por precio min y max
