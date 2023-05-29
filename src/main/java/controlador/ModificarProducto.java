@@ -50,6 +50,7 @@ public class ModificarProducto extends HttpServlet {
 		
 		pm.conectar();
 		producto = pm.get(id);
+
 		pm.cerrar();
 
 		request.setAttribute("producto", producto);

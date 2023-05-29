@@ -73,6 +73,9 @@
 					  <select class="form-control" id="seccion" name="id_seccion"  required>
 					    <option value="">--Selecciona una seccion</option>
 					    <c:forEach items="${secciones}" var="seccion">
+					    	<c:if test="${producto.seccion.id eq seccion.id}">
+					    	<option value="${seccion.id}" selected="selected">${seccion.nombre}</option>
+					    	</c:if>
 					      <option value="${seccion.id}">${seccion.nombre}</option>
 					    </c:forEach>
 					 </select>

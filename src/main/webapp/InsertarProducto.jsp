@@ -64,7 +64,7 @@
   		
 	  		<div class="form-group">
 	  			<label for="seccion">Selecciona una seccion:</label>
-					  <select class="form-control" id="seccion" name="id_seccion"  required>
+					  <select class="form-control" id="" name="id_seccion"  required>
 					    <option value="">--Selecciona una seccion</option>
 					    <c:forEach items="${secciones}" var="seccion">
 					      <option value="${seccion.id}">${seccion.nombre}</option>
